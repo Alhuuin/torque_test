@@ -17,6 +17,14 @@ TorqueTest::TorqueTest(mc_rbdyn::RobotModulePtr rm, double dt, const mc_rtc::Con
 
   torqueTask_->desiredTorque(joint, 1.0);
 
+  logger().addLogEntry(name_ + "_tau_d_test ", this, [this]() { return torqueTask_->desiredTorque(); });
+  logger().addLogEntry(name_ + "_test ", this, [this]() { return torqueTask_->desiredTorque(); });
+  logger().addLogEntry(name_ + "_testtest ", this, [this]() { return torqueTask_->desiredTorque(); });
+  logger().addLogEntry(name_ + "_taud ", this, [this]() { return torqueTask_->desiredTorque(); });
+  logger().addLogEntry(name_ + "_tau_di ", this, [this]() { return torqueTask_->desiredTorque(); });
+  logger().addLogEntry(name_ + "_tau_d_bis ", this, [this]() { return torqueTask_->desiredTorque(); });
+  logger().addLogEntry(name_ + "_z", this, [this]() { return torqueTask_->desiredTorque(); });  
+  logger().addLogEntry(name_ + "_what", this, [this]() { return torqueTask_->desiredTorque(); });
   std::vector<double> err(robot.refJointOrder().size(), 0);
   logger().addLogEntry(name_ + "_tauIn-tauOut", this,
                         [this, err]() mutable -> const std::vector<double> &
