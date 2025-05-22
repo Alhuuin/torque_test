@@ -1,7 +1,4 @@
 #include "TorqueTest.h"
-#include <ATen/core/TensorBody.h>
-#include <cstddef>
-#include <chrono>
 
 double TorqueTest::phase_ = 0.0;
 double TorqueTest::period_ = 1.0;
@@ -190,7 +187,7 @@ inline bool TorqueTest::applyPolicy(const torch::Tensor& obs_tensor)
         mc_rtc::log::info("Actual torque:");
         for (size_t i = 0; i < joint_names_.size(); ++i) {
           unsigned int idx = robots().robot().jointIndexByName(joint_names_[i]);
-          mc_rtc::log::info("  {} = {}", joint_names_[i], torqueTask_->torque()[idx]);
+          mc_rtc::log::info("  {} = {}", joint_names_[i], robots().robot().mbc().jointTorque[idx]);
         }
       } catch (const std::exception& e) {
         mc_rtc::log::error("Failed to apply torque to TorqueTask: {}", e.what());
