@@ -1,4 +1,5 @@
 ---
+policy_path: "/home/alice/rl_mc_rtc/reinforcement-learning-hrp/torque_export/actor_scripted.pt"
 # If true, the FSM transitions are managed by an external tool
 Managed: false
 # If true and the FSM is self-managed, transitions should be triggered
