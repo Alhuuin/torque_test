@@ -75,7 +75,7 @@ bool TorqueTest::run()
   double inference_time_hz = 1.0 / (inference_time_ns / 1e9);
   std::cout << "Inference time: " << inference_time_ns << " ns (" << inference_time_hz << " Hz)" << std::endl;
 
-  return mc_control::fsm::Controller::run(mc_solver::FeedbackType::ClosedLoop);
+  return mc_control::fsm::Controller::run(mc_solver::FeedbackType::ClosedLoopIntegrateReal);
 }
 
 void TorqueTest::warmUpPolicy(int warmup_steps)

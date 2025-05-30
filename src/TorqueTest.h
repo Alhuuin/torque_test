@@ -10,6 +10,11 @@
 #include <torch/custom_class.h>
 #include <torch/script.h>
 
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
+#include <filesystem> 
 
 #include "api.h"
 
@@ -31,6 +36,10 @@ struct TorqueTest_DLLAPI TorqueTest : public mc_control::fsm::Controller
 private:  
   torch::jit::script::Module policy_;
   std::vector<std::string> joint_names_;
+  std::unordered_map<std::string, size_t> joint_indices_;
+
+  std::unordered_map<int,int> test;
+  std::vector<float> test2;
   
   std::shared_ptr<mc_tasks::TorqueTask> torqueTask_;
   Eigen::VectorXd joint_torques_;
@@ -38,6 +47,16 @@ private:
   
   std::string policy_path_;
   double dt_;
+
+  std::vector<double> current_action_;
+  
+  std::vector<float> last_action_;
+  std::mutex action_mutex_;
+  std::thread policy_thread_;
+  std::atomic<bool> policy_running_{false};
+  std::chrono::steady_clock::time_point last_policy_time_;
+  double policy_dt_{0.005}; // Default to 200Hz
+  torch::Tensor obs_tensor_;
   
   static double phase_;
   static double period_;
