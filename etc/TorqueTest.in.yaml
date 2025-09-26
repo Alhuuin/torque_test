@@ -1,5 +1,4 @@
 ---
-policy_path: "/home/alice/rl_mc_rtc/reinforcement-learning-hrp/torque_export/actor_scripted.pt"
 # If true, the FSM transitions are managed by an external tool
 Managed: false
 # If true and the FSM is self-managed, transitions should be triggered
@@ -18,40 +17,37 @@ StatesFiles:
 # If true, state factory will be more verbose
 VerboseStateFactory: false
 # Additional robots to load
+ObserverPipelines:
+  name: "Pipeline"
+  gui: true
+  observers:
+    - type: Encoder
+      config:
+          velocity: encoderVelocities
+    
+    - type: Attitude
+      required: true
+      update: true
+
+    - type: KinematicInertial              # - Estimates the floating base state using the KinematicInertial observer
+      update: true                         #   update the real robot instance from its results
+      gui: true                            #   Displays the estimated velocity as an arrow (default)
+      config:
+        imuBodySensor: Accelerometer
+
+    - type: BodySensor
+      update: true
+      config:
+        bodySensor: FloatingBase
+
 robots:
   ground:
     module: env/ground
-# General constraints, always on
-constraints:
-# - type: contact
-- type: dynamics
-  damper: [0.1, 0.01, 0.5]
-- type: compoundJoint
-# Collision constraint
-# collisions:
-# - type: collision
-#   useMinimal: true
-# # Initial set of contacts
-# contacts:
-# - r2: ground
-#   r1Surface: LeftFoot
-#   r2Surface: AllGround
-# - r2: ground
-#   r1Surface: RightFoot
-#   r2Surface: AllGround
 
-# Some options for a specific robot
-jvrc1:
-  posture:
-    stiffness: 1
-    weight: 10
-  ff:
-    stiffness: 2
-    weight: 100
 # Implement some additional text states
 states: {}
 # Transitions map
 transitions:
-- [TorqueTest_Initial, OK, TorqueTest_Initial, Strict]
+  - [TorqueTest_Initial, OK, TorqueTest_Initial]
 # Initial state
 init: TorqueTest_Initial
